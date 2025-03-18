@@ -7,4 +7,5 @@ export interface PostDetail {
   reference: string
   title: string
   content: string
+  template: 'public' | 'gated'
 }
