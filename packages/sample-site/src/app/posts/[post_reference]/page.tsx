@@ -4,7 +4,7 @@ import { MDXRemote } from 'next-mdx-remote/rsc'
 
 interface PostParams {
   params: {
-    reference: string
+    post_reference: string
   }
 }
 
@@ -14,13 +14,15 @@ const components = {
 }
 
 export default async function PostPage({ params }: PostParams) {
-  const { reference } = params
+  const { post_reference } = params
 
   // 從 API 獲取文章內容
   const res = await fetch(
-    `http://localhost:10000/v1/content_delivery/posts/${reference}`,
+    `${process.env.CHORE_MASTER_API_HOST}/v1/content_delivery/posts/${post_reference}`,
     {
-      cache: 'no-store',
+      headers: {
+        'X-PROJECT-API-KEY': process.env.CHORE_MASTER_PROJECT_API_KEY || '',
+      },
     }
   )
 

@@ -6,9 +6,15 @@ import { PostSummary } from '@/types/global'
 export const revalidate = false
 
 export default async function Home() {
+  // 使用環境變數獲取 API 主機地址
+  const apiHost = process.env.CHORE_MASTER_API_HOST
+
   // 從 API 獲取文章列表
-  // 移除 cache: 'no-store' 以允許 Next.js 在構建時緩存結果
-  const res = await fetch('http://localhost:10000/v1/content_delivery/posts')
+  const res = await fetch(`${apiHost}/v1/content_delivery/posts`, {
+    headers: {
+      'X-PROJECT-API-KEY': process.env.CHORE_MASTER_PROJECT_API_KEY || '',
+    },
+  })
 
   if (!res.ok) {
     throw new Error('Failed to fetch posts')
